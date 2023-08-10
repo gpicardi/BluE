@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- This file demonstrates the use of some <gazebo> tags -->
+
+    <!-- To include it add the following line -->
+    <!-- <xacro:include filename="example_gazebo.xacro" /> -->
+
+    <!-- Gazebo requires the use of plugins to interact with other systems such as ROS. -->
+
+    <!-- ros_control plugin -->
+    <gazebo>
+      <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+        <parameters>$(find silver)/config/my_controllers.yaml</parameters>
+        <parameters>$(find silver)/config/gaz_ros2_control_use_sim.yaml</parameters>
+      </plugin>
+    </gazebo>
+
+     <!-- Body Link -->
+    <gazebo reference="body_link">
+      <mu1>0.2</mu1>
+      <mu2>0.2</mu2>
+      <material>Gazebo/Blue</material>
+    </gazebo>
+
+    <!-- Coxa Link -->
+    <gazebo reference="coxa_link">
+      <mu1>0.2</mu1>
+      <mu2>0.2</mu2>
+      <material>Gazebo/Blue</material>
+    </gazebo>
+
+    <!-- Femur Link -->
+    <gazebo reference="femur_link">
+      <mu1>0.2</mu1>
+      <mu2>0.2</mu2>
+      <material>Gazebo/Orange</material>
+    </gazebo>
+
+    <!-- Tibia Link -->
+    <gazebo reference="tibia_link">
+      <mu1>0.2</mu1>
+      <mu2>0.2</mu2>
+      <material>Gazebo/Black</material>
+    </gazebo>
+
+    <!-- Foot Link -->
+    <gazebo reference="foot_link">
+      <mu1>0.2</mu1>
+      <mu2>0.2</mu2>
+      <material>Gazebo/Orange</material>
+    </gazebo>
+
+
+</robot>
