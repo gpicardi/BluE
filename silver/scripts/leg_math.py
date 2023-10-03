@@ -69,7 +69,7 @@ class LegMath:
 
         return np.array([x, y, z])
 
-    def inv_kine(self, ee_pos, knee_up):
+    def inv_kine(self, ee_pos, knee_up, right_side = 0):
         """
         Performs inverse kinematics calculation for a given end-effector position and knee configuration.
 
@@ -144,7 +144,9 @@ class LegMath:
         q2 = np.pi/2 + s3 + s1
         q3 = knee_sign*(s4 - np.pi) #account for knee_sign  
                
-        joint_angles = np.array([wrap_angle(q1), wrap_angle(q2), wrap_angle(q3)])
+        joint_angles = np.array([wrap_angle(q1), wrap_angle(q2), wrap_angle(q3)]) 
+        if right_side:
+            joint_angles[0] = -joint_angles[0]
         return joint_angles.reshape(3,1) #column array
     
     def inv_kine_num(self, ee_pos):

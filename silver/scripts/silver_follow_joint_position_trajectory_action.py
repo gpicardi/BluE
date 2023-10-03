@@ -69,8 +69,18 @@ class SilverFollowPositionTrajectoryAction(Node):
         self.trj_cart_space = leg_cart_trj
 
         #convert trj to joint space for all legs and stack them. Dimensions: 18xN
-        self.trj_joint_space = np.hstack([
+        """self.trj_joint_space = np.hstack([
             np.vstack([self.leg.inv_kine(self.trj_cart_space[0:3, i], True)] * 6)
+            for i in range(self.N)
+        ])"""
+        
+        self.trj_joint_space = np.hstack([
+            np.vstack((self.leg.inv_kine(self.trj_cart_space[0:3, i], True, False),
+                      self.leg.inv_kine(self.trj_cart_space[0:3, i], True, False),
+                      self.leg.inv_kine(self.trj_cart_space[0:3, i], True, False),
+                      self.leg.inv_kine(self.trj_cart_space[0:3, i], True, True),
+                      self.leg.inv_kine(self.trj_cart_space[0:3, i], True, True),
+                      self.leg.inv_kine(self.trj_cart_space[0:3, i], True, True)))
             for i in range(self.N)
         ])
 
@@ -127,7 +137,7 @@ class SilverFollowPositionTrajectoryAction(Node):
         feedback = feedback_msg.feedback
 
     def listener_callback(self, msg): #this function should update the trajectories based on the user commands (only dir for now)
-        self.create_trajectory(generate_ellipsoid_trajectory_X(msg.data, 0.1, 0.1, 0.375, -0.3, self.N))
+        self.create_trajectory(generate_ellipsoid_trajectory_Y(msg.data, 0.1, 0.1, 0.375, -0.3, self.N))
         self.send_goal()
         #self.get_logger().info('I heard: "%f"' % msg.data)
         self.cc_listener+=1
@@ -135,9 +145,9 @@ class SilverFollowPositionTrajectoryAction(Node):
 
 def generate_ellipsoid_trajectory_Y(A,B,x0=0, y0=0.375, z0 = 0, N = 10):
     t = np.linspace(0, 2*np.pi, N)
-    x = A*np.cos(t) + x0
+    x = A*np.cos(t-np.pi/2) + x0
     y = np.full(N,y0)
-    z = B*np.sin(t) + z0
+    z = B*np.sin(t-np.pi/2) + z0
 
     return np.array([x,y,z])
 
