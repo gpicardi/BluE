@@ -9,6 +9,12 @@ controller_manager:
     forward_position_controller:
       type: forward_command_controller/ForwardCommandController
 
+    forward_velocity_controller:
+      type: forward_command_controller/ForwardCommandController
+
+    forward_effort_controller:
+      type: forward_command_controller/ForwardCommandController
+
     joint_trajectory_position_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
@@ -19,6 +25,22 @@ forward_position_controller:
       - femur_joint
       - tibia_joint
     interface_name: position
+
+forward_velocity_controller:
+  ros__parameters:
+    joints:
+      - coxa_joint
+      - femur_joint
+      - tibia_joint
+    interface_name: velocity
+
+forward_effort_controller:
+  ros__parameters:
+    joints:
+      - coxa_joint
+      - femur_joint
+      - tibia_joint
+    interface_name: effort     
 
 joint_trajectory_position_controller:
   ros__parameters:

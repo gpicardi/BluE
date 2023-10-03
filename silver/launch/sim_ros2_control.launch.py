@@ -1,11 +1,9 @@
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import IncludeLaunchDescription, RegisterEventHandler
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration, Command
-from launch.conditions import IfCondition
-
+from launch.event_handlers import OnProcessExit
 
 from launch_ros.actions import Node
 import xacro
@@ -50,13 +48,25 @@ def generate_launch_description():
     forward_position_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["forward_position_controller", "--controller-manager", "/controller_manager"],
+        arguments=["forward_position_controller", "--controller-manager", "/controller_manager", "--inactive"],
     )
 
-    joint_trajectory_controller_spawner = Node(
+    forward_velocity_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_trajectory_position_controller", "--controller-manager", "/controller_manager"],
+        arguments=["forward_velocity_controller", "--controller-manager", "/controller_manager", "--inactive"],
+    )
+
+    forward_effort_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["forward_effort_controller", "--controller-manager", "/controller_manager"],
+    )
+
+    joint_trajectory_position_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_trajectory_position_controller", "--controller-manager", "/controller_manager", "--inactive"],
     )
 
     rviz_node = Node(
@@ -67,15 +77,24 @@ def generate_launch_description():
         arguments=["-d", str(rviz_path)],
     )
 
+    delayed_rviz_node = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_state_broadcaster_spawner,
+            on_exit=[rviz_node],
+        )
+    )
+
     # Run the node
     return LaunchDescription([
         gazebo,
         rsp,
         spawn_entity,
         joint_state_broadcaster_spawner,
-        #forward_position_controller_spawner,
-        joint_trajectory_controller_spawner,
-        #rviz_node
+        forward_position_controller_spawner,
+        forward_velocity_controller_spawner,
+        forward_effort_controller_spawner,
+        joint_trajectory_position_controller_spawner,
+        delayed_rviz_node
     ])
 
 

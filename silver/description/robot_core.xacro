@@ -103,8 +103,6 @@
     </link>
 
 <!-- TIBIA JOINT AND LINK -->
-<!-- Simulate the 4 bar mechanism is not possible with urfd. Must look into transmission/mapping between motor angle and joint angle -->
-
     <joint name="tibia_joint" type="revolute">
         <origin xyz="${tibia_joint_Ox} ${tibia_joint_Oy} ${tibia_joint_Oz}" rpy="0.0 0.0 0.0"/>
         <parent link="femur_link"/>
@@ -135,13 +133,13 @@
 
 <!-- FOOT JOINT (FIXED) AND LINK -->
 
-    <joint name="foot_joint" type="fixed">
+    <!--joint name="foot_joint" type="fixed">
         <origin xyz="${foot_joint_Ox} 0.0 0.0" rpy="0.0 0.0 ${foot_joint_Rz}"/>
         <parent link="tibia_link"/>
         <child link="foot_link"/>
-    </joint>
+    </joint-->
 
-     <link name="foot_link">
+     <!--link name="foot_link">
         <visual>
             <origin xyz="${foot_link_Ox} 0.0 0.0" rpy="0.0 0.0 0.0"/>
             <geometry>
@@ -158,6 +156,6 @@
         <xacro:inertial_box mass="${foot_link_mass}" x="${foot_link_dx}" y="${foot_link_dy}" z="${foot_link_dz}">
             <origin xyz="${foot_link_Ox} 0.0 0.0" rpy="0.0 0.0 0.0"/>
         </xacro:inertial_box>
-    </link>
+    </link-->
 
 </robot>
