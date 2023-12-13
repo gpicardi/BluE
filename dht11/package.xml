@@ -3,8 +3,8 @@
 <package format="3">
   <name>dht11</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="silvercore@todo.todo">silvercore</maintainer>
+  <description>ROS2 node to read and publish data from the temperature and humidity sensor dht11</description>
+  <maintainer email="giacomo.picardi1991@gmail.com">silvercore</maintainer>
   <license>TODO: License declaration</license>
 
   <test_depend>ament_copyright</test_depend>

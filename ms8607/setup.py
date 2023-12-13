@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+        'ms8607 = ms8607.ms8607:main'
         ],
     },
 )

@@ -15,11 +15,12 @@ setup(
     zip_safe=True,
     maintainer='silvercore',
     maintainer_email='giacomo.picardi1991@gmail.com',
-    description='TODO: Package description',
+    description='ROS2 node to read and publish data from the temperature and humidity sensor dht11',
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+        'dht11 = dht11.dht11:main'
         ],
     },
 )
