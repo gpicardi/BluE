@@ -42,7 +42,7 @@ ament_python_install_package(${PROJECT_NAME})
 
 #install python executables
 install(
-  DIRECTORY config description launch worlds scripts meshes
+  DIRECTORY config description launch scripts
   DESTINATION share/${PROJECT_NAME}
 )
 
