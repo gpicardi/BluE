@@ -49,7 +49,7 @@ install(
 install(PROGRAMS
   scripts/forward_position_publisher.py  scripts/position_trajectory_publisher.py
   scripts/follow_joint_position_trajectory_action_client.py scripts/forward_position_publisher_silver.py
-  scripts/silver_follow_joint_position_trajectory_action.py
+  scripts/silver_follow_joint_position_trajectory_action.py scripts/trajectory_publisher.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

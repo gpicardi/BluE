@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'ms8607'
+package_name = 'ltc2945'
 
 setup(
     name=package_name,
@@ -20,8 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'ms8607_i2c0 = ms8607.ms8607_i2c0:main',
-            'ms8607_i2c1 = ms8607.ms8607_i2c1:main'
+            'ltc2945 = ltc2945.ltc2945:main'
         ],
     },
 )

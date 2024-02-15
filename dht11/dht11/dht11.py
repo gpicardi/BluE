@@ -9,23 +9,28 @@ import Adafruit_DHT
 class Dht11Node(Node):
 
 	def __init__(self):
-		# Create sensor object and specify input pin
+		# Create sensor object and specify input pin (Repeat for 6 sensors)
 		self.DHT_SENSOR = Adafruit_DHT.DHT11
-		self.DHT_PIN = 4
+		self.DHT_PIN = 17
 		
 		# Initialize parent (ROS Node)
 		super().__init__('dht11')
+		# What data structure for 6 sensors? Custom or Float64Multiarrray?
 		self.temperature_publisher_ = self.create_publisher(Float64, '/dht11/temperature', 10)
 		self.humidity_publisher_ = self.create_publisher(Float64, '/dht11/humidity', 10)
 		timer_period = 3
 		self.timer = self.create_timer(timer_period, self.timer_callback)
 		self.i = 0
+
+		self.get_logger().info("Sensor DHT11 correctly initialized.")
 		
 	def timer_callback(self):
-		# Read data from sensor
+		# Read data from sensor (Repeat for 6 sensors)
 		humidity, temperature = Adafruit_DHT.read(self.DHT_SENSOR, self.DHT_PIN)
+
 		# Reading could fail. If it does, simply skip the publishing
-		try:
+		#This try block will change depending on the data structure used for 6 sensors
+		try: 
 			temperature_msg = Float64()
 			temperature_msg.data = temperature
 			

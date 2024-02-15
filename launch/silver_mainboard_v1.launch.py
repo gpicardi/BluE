@@ -17,10 +17,6 @@ def generate_launch_description():
     xacro_file = os.path.join(get_package_share_directory(pkg_name),file_subpath)
     robot_description_raw = xacro.process_file(xacro_file).toxml()
 
-    # Use config file for rviz
-    base_path = os.path.realpath(get_package_share_directory('silver')) # also tried without realpath
-    rviz_path=base_path+'/config/rviz_config_file.rviz'
-
     # Specify controllers configurations
     controller_config = os.path.join(
         get_package_share_directory(
@@ -63,13 +59,6 @@ def generate_launch_description():
         output="screen"
     )
 
-    forward_effort_controller_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["forward_effort_controller", "--controller-manager", "/controller_manager", "--inactive"],
-        output="screen"
-    )
-
     joint_trajectory_position_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -77,19 +66,46 @@ def generate_launch_description():
         output="screen"
     )
 
-    rviz_node = Node(
-        package="rviz2",
-        executable="rviz2",
-        name="rviz2",
-        output="log",
-        arguments=["-d", str(rviz_path)],
+    bno055_config = os.path.join(
+        get_package_share_directory('bno055'),
+        'config',
+        'bno055_params_i2c.yaml'
+        )
+        
+    bno055_spawner=Node(
+        package = 'bno055',
+        executable = 'bno055',
+        parameters = [bno055_config]
     )
 
-    delayed_rviz_node = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=joint_state_broadcaster_spawner,
-            on_exit=[rviz_node],
-        )
+    dht11_spawner = Node(
+        package="dht11",
+        executable="dht11",
+        output="screen"
+    )
+
+    ltc2945_spawner = Node(
+        package="ltc2945",
+        executable="ltc2945",
+        output="screen"
+    )
+
+    ms5837_spawner = Node(
+        package="ms5837",
+        executable="ms5837",
+        output="screen"
+    )
+
+    ms8607_i2c0_spawner = Node(
+        package="ms8607",
+        executable="ms8607_i2c0",
+        output="screen"
+    )
+
+    ms8607_i2c1_spawner = Node(
+        package="ms8607",
+        executable="ms8607_i2c1",
+        output="screen"
     )
 
     # Run the node
@@ -99,9 +115,14 @@ def generate_launch_description():
         joint_state_broadcaster_spawner,
         forward_position_controller_spawner,
         forward_velocity_controller_spawner,
-        #forward_effort_controller_spawner,
         joint_trajectory_position_controller_spawner,
-        #delayed_rviz_node
+        bno055_spawner,
+        dht11_spawner,
+        ltc2945_spawner,
+        ms5837_spawner,
+        ms8607_i2c0_spawner,
+        ms8607_i2c1_spawner
+
     ])
 
 
