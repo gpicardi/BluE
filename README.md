@@ -20,11 +20,19 @@ ROS2 package for the control of the Underwater Legged Robot SILVER2. The code is
 
 ## **dht11:**
 
-ROS2 package to read data from the DHT11 temperature and humidity sensor. It publishes temperature and humidity in separate topics (/dht11/temperature and /dht11/humidity). Based on the Adafruit_DHT python library.
+ROS2 package to read data from the DHT11 temperature and humidity sensor. It publishes temperature and humidity for 6 sensors as two Float64Multiarrays in separate topics (/dht11/temperature and /dht11/humidity). Based on the Adafruit_DHT python library. 
 
 ## **ms8607:**
 
-RO2 package to read data from the MS8607 pressure, temperature and relative humidity sensor. It publishes pressure, temperature and relative humidity in separate topics (/ms8607/pressure, /ms8607/temperature, /ms8607/relative_humidity). Based on the adafruit_ms8607 python library.
+RO2 package to read data from the MS8607 pressure, temperature and relative humidity sensor. It publishes pressure, temperature and relative humidity in separate topics (/ms8607/pressure, /ms8607/temperature, /ms8607/relative_humidity). Based on the adafruit_ms8607 python library. The code provides two nodes for bus i2c-0 and i2c-1.
+
+## **ms5837:**
+
+RO2 package to read data from the MS5837 depth, pressure, and temperature sensor (Blue Robotics). It publishes depth, pressure, and temperature in separate topics (/ms5837/pressure, /ms5837/temperature, /ms5837/humidity). Based on the smbus library.
+
+## **torches:**
+
+RO2 package to control the subsea lights (Blue Robotics). It subscribes to a topic called /torches_intensity (Int64 from 0 to 100) and sends PWM commands to regulate the intensity of the lights
 
 ## **bno055:**
 
