@@ -34,6 +34,10 @@ RO2 package to read data from the MS5837 depth, pressure, and temperature sensor
 
 RO2 package to control the subsea lights (Blue Robotics). It subscribes to a topic called /torches_intensity (Int64 from 0 to 100) and sends PWM commands to regulate the intensity of the lights
 
+## **ltc2945:**
+
+ROS2 package to read data from the LTC2945 power monitor. The calibration of the sensor depends on the shunt resistor. Calibration is not implemented yet, so currently the current and power values are not correct.
+
 ## **bno055:**
 
 ROS2 package to read data from the BNO055 IMU. I use the code from https://github.com/flynneva/bno055
