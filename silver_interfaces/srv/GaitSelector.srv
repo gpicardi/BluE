@@ -1,0 +1,20 @@
+string type
+float64 gait_width
+float64 gait_height
+float64 direction
+float64 step_length
+float64 duty_cycle
+float64 ground_clearance
+float64[] phase_lag
+float64 nstep
+float64 period
+float64 joint_vel
+float64 alpha
+float64 td_height
+bool underactuated
+int64 vl_no
+int64 rotation
+string feet_policy
+---
+bool success
+string status_message
