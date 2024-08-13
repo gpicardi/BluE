@@ -12,7 +12,7 @@
                 <plugin>dynamixel_hardware/DynamixelHardware</plugin>
                 <!--plugin>silver_dynamixel_hardware/SilverDynamixelHardware</plugin-->
                 <param name="usb_port">/dev/ttyUSB0</param>
-                <param name="baud_rate">57600</param>
+                <param name="baud_rate">1000000</param>
             </hardware>
         </xacro:unless>
 

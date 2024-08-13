@@ -6,7 +6,7 @@
      <!-- Import Gazebo related stuff -->
     <xacro:include filename="gazebo_control.xacro"/>
      <!-- Import Leg geometry Macro -->
-    <xacro:include filename="robot_leg.xacro"/>
+    <xacro:include filename="silver_leg.xacro"/>
      <!-- Import Leg control Macro -->
     <xacro:include filename="ros2_control_leg.xacro"/>
      <!-- Import ROS control -->
@@ -50,11 +50,11 @@
         </xacro:inertial_box>
     </link>
 
-    <xacro:leg suffix="0" reflect="1" Ox="0.35" Oy="0.3" Oz="-0.15"/>
-    <xacro:leg suffix="1" reflect="1" Ox="0.0" Oy="0.3" Oz="-0.15"/>
-    <xacro:leg suffix="2" reflect="1" Ox="-0.35" Oy="0.3" Oz="-0.15"/>
-    <xacro:leg suffix="3" reflect="-1" Ox="0.35" Oy="-0.3" Oz="-0.15"/>
-    <xacro:leg suffix="4" reflect="-1" Ox="0.0" Oy="-0.3" Oz="-0.15"/>
-    <xacro:leg suffix="5" reflect="-1" Ox="-0.35" Oy="-0.3" Oz="-0.15"/>
+    <xacro:leg suffix="0" reflect="1" side='right' Ox="0.275" Oy="-0.2" Oz="-0.15"/>
+    <xacro:leg suffix="1" reflect="1" side='right' Ox="0.0" Oy="-0.2" Oz="-0.15"/>
+    <xacro:leg suffix="2" reflect="-1" side='right' Ox="-0.275" Oy="-0.2" Oz="-0.15"/>
+    <xacro:leg suffix="3" reflect="-1" side='left' Ox="0.275" Oy="0.2" Oz="-0.15"/>
+    <xacro:leg suffix="4" reflect="-1" side='left' Ox="0.0" Oy="0.2" Oz="-0.15"/>
+    <xacro:leg suffix="5" reflect="1" side='left' Ox="-0.275" Oy="0.2" Oz="-0.15"/>
 
 </robot>

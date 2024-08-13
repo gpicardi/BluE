@@ -2,7 +2,7 @@
 
 import numpy as np
 
-import leg_math
+import silver.scripts.new_leg_math as new_leg_math
 
 import rclpy
 from rclpy.time import Time, Duration
@@ -26,7 +26,7 @@ class SilverFollowPositionTrajectoryAction(Node):
         self.dt = 0.4 #time step for trajectory waypoints
         self.dt_duration = Duration(seconds=self.dt) # use duration instead of float 
         self.N = 10 #number of waypoints in a trajectory (self.dt*self.N = GAIT PERIOD)
-        self.leg = leg_math.LegMath() #contains fw_kine and inv_kine to generate trajectories
+        self.leg = new_leg_math.LegMath() #contains fw_kine and inv_kine to generate trajectories
         #Goal settings
         self.goal_msg = FollowJointTrajectory.Goal() #initialize Goal, updated by create_trajectory functions
         self.goal_msg.trajectory.joint_names =['coxa_joint_0', 'femur_joint_0', 'tibia_joint_0',

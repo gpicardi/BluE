@@ -14,3 +14,46 @@ ros2 topic pub /forward_effort_controller/commands std_msgs/msg/Float64MultiArra
 - 2"
 
 ros2 control switch_controllers --deactivate forward_effort_controller --activate forward_position_controller 
+
+# DRAGON POSITION
+ros2 topic pub /forward_position_controller/commands std_msgs/msg/Float64MultiArray "data:
+- 0.75
+- 0.8
+- 2.3
+- 0.0
+- 0.8
+- 2.3
+- -0.75
+- 0.8
+- 2.3
+- -0.75
+- 0.8
+- 2.3
+- 0.0
+- 0.8
+- 2.3
+- 0.75
+- 0.8
+- 2.3"
+
+ros2 service call /silver_locomotion/set_gait silver_interfaces/srv/GaitSelector "{type: 'static', 
+gait_width: 40.0,
+gait_height: 30.0,
+direction: 0.0,
+step_length: 20.0,
+duty_cycle: 0.75,
+ground_clearance: 10.0,
+phase_lag: [180.0, 0.0, 180.0, 0.0, 180.0, 0.0],
+nstep: 30.0,
+period: 5.0,
+joint_vel: 1.0,
+alpha: 1.0,
+td_height: 1.0,
+underactuated: False,
+vl_no: 0,
+rotation: 0,
+feet_policy: 'none'}"
+
+ros2 service call /silver_locomotion/gait_start std_srvs/srv/Empty
+
+ros2 service call /silver_locomotion/gait_stop std_srvs/srv/Empty

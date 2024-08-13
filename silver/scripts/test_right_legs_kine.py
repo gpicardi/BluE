@@ -5,7 +5,7 @@ from rclpy.node import Node
 
 from sensor_msgs.msg import JointState
 
-from leg_math import LegMath
+from silver.scripts.new_leg_math import LegMath
 
 import numpy as np
 
