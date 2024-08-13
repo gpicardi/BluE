@@ -2,11 +2,12 @@ This repository contains the software developed for the **BluE project**. The pr
 
 ## **silver:**
 
-ROS2 package for the control of the Underwater Legged Robot SILVER2. The code is based on ros2_control and on the dynamixel hardware plugin from the dynamixel community available here: https://github.com/dynamixel-community/dynamixel_hardware. At the moment the code is used for a single leg (3 motors) and it will be extended 6 legs (18 motors) soon.
+ROS2 package for the control of the Underwater Legged Robot SILVER2. The code is based on ros2_control and on the dynamixel hardware plugin from the dynamixel community available here: https://github.com/dynamixel-community/dynamixel_hardware. The code can run a single leg (3 motors) and as well as the complete hexapod (18 motors).
 
 **Load the robot modol, controller_manager and controllers:**
 
 * ros2 launch silver robot_ros2_control_launch.py
+* ros2 launch silver sim_silver.launch.py
 
 **To interact with the controller joint_trajectory_position_controller you can use a publisher or an action client:**
 
@@ -17,6 +18,12 @@ ROS2 package for the control of the Underwater Legged Robot SILVER2. The code is
 **To interact with the controller forward_position_controller you can use the publisher:**
 
 * Publisher --> ros2 run silver forward_position_publisher.py
+
+**To control the hexapod, the locomotion_node exposes three services**
+
+* /locomotion/set_gait (type GaitSelector) allows to set the parameters for different gaits (only static ominidirectional gait is implemented now)
+* /locomotion/gait_start (type Empty) starts the gaits
+* /locomotion/gait_stop (type Empty) stops the gaits
 
 ## **dht11:**
 
