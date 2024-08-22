@@ -28,13 +28,13 @@
                 <material name="red"/>
             </visual>
             <collision>
-                <origin xyz="${coxa_link_Ox} ${coxa_link_Oy} ${coxa_link_Oz}" rpy="0.0 ${coxa_link_Ry} 0.0"/>
+                <origin xyz="${reflect*coxa_link_Ox} ${coxa_link_Oy} ${coxa_link_Oz}" rpy="0.0 ${coxa_link_Ry} 0.0"/>
                 <geometry>
                     <cylinder length="${coxa_link_length}" radius="${coxa_link_radius}"/>
                 </geometry>
             </collision>
             <xacro:inertial_cylinder mass="${coxa_link_mass}" length="${coxa_link_length}" radius="${coxa_link_radius}">
-                <origin xyz="${coxa_link_Ox} ${coxa_link_Oy} ${coxa_link_Oz}" rpy="0.0 ${coxa_link_Ry} 0.0"/>
+                <origin xyz="${reflect*coxa_link_Ox} ${coxa_link_Oy} ${coxa_link_Oz}" rpy="0.0 ${coxa_link_Ry} 0.0"/>
             </xacro:inertial_cylinder>
         </link>
 
@@ -58,13 +58,13 @@
                 <material name="orange"/>
             </visual>
             <collision>
-                <origin xyz="${femur_link_Ox} 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <origin xyz="${femur_link_Ox} ${femur_link_Oy} ${reflect*femur_link_Oz}" rpy="0.0 0.0 0.0"/>
                 <geometry>
                     <box size="${femur_link_dx} ${femur_link_dy} ${femur_link_dz}"/>
                 </geometry>
             </collision>
             <xacro:inertial_box mass="${femur_link_mass}" x="${femur_link_dx}" y="${femur_link_dy}" z='${femur_link_dz}'>
-                <origin xyz="${femur_link_Ox} 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <origin xyz="${femur_link_Ox} ${femur_link_Oy} ${reflect*femur_link_Oz}" rpy="0.0 0.0 0.0"/>
             </xacro:inertial_box>
         </link>
 
@@ -93,7 +93,7 @@
                 </geometry>
             </collision>
             <xacro:inertial_box mass="${tibia_link_mass}" x="${tibia_link_dx}" y="${tibia_link_dy}" z="${tibia_link_dz}">
-                <origin xyz="${tibia_link_Ox} 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <origin xyz="${tibia_link_Ox} ${tibia_link_Oy} ${tibia_link_Oz}" rpy="0.0 0.0 0.0"/>
             </xacro:inertial_box>
         </link>
 
