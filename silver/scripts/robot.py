@@ -23,7 +23,7 @@ static_poses_pos = {"zero": np.zeros(18),
                     "low_torque": np.array([45,-75,0, 0,-75,0, -45,-75,0, -45,-75,0, 0,-75,0, 45,-75,0]),
                     "folded": np.array([0,90,160,0,90,160,0,90,160,0,90,160,0,90,160,0,90,160]),
                     #"dragon": np.array([45,70,150,0,70,150,-45,70,150,-45,70,150,0,70,150,45,70,150])
-                    "dragon": np.array([45,50,130,0,50,130,-45,50,130,-45,50,130,0,50,130,45,50,130])*np.pi/180,
+                    "dragon": np.array([45,30,130,0,30,130,-45,30,130,-45,30,130,0,30,130,45,30,130])*np.pi/180,
                     "idle": np.array([45,50,130,0,50,130,-45,50,130,-45,50,130,0,50,130,45,50,130]) # dragon position to idle
                    }
 
@@ -95,7 +95,8 @@ class Robot:
 
         def __del__(self):
                 #Last pose should be set in locomotion.py
-                input("Press ENTER to terminate")
+                #input("Press ENTER to terminate")
+                print("Successfully deleted a robot object")
 
         def kine_coxa_plane(self, q):
                 #q = [q1, q2]: joint coords of femur  and  tibia  joints in [rad]
@@ -248,7 +249,8 @@ class Robot:
                     Qdot[:,1:n_step] = np.abs(np.diff(Q[:,0:n_step])/delta_t)
                 else:
                     print('non admissible trj for leg_id: '+ str(leg_id))
-        		# apply phase lag
+
+        	# apply phase lag
                 index = int(n_step*(phi/360))
                 Q_tmp = np.zeros(Q.shape)
                 Qdot_tmp = np.zeros(Qdot.shape)
@@ -261,6 +263,81 @@ class Robot:
                 T_tmp[:,index:n_step] = T[:,0:n_step-index]
 
                 return T_tmp, Q_tmp, Qdot_tmp, admiss
+        
+        def change_configuration(self, q_des, q_cur):
+                gait_t = 3 #[s]
+                #assumption: configuration with neutral asset <--> all legs have the same height when they touch the ground
+                new_leg_heights = np.zeros(6)
+                old_leg_heights = np.zeros(6)
+                for i in np.arange(0,6):
+                        np_i = self.kine(q_des[3*i:3*i+3],i) #possibile fonte di errore
+                        op_i = self.kine(q_cur[3*i:3*i+3],i)
+                        new_leg_heights[i] = np_i[2]
+                        old_leg_heights[i] = op_i[2]
+                nh = min(new_leg_heights)
+                oh = min(old_leg_heights)
+
+                if np.allclose(q_des, q_cur):
+                        print("same pose as before")
+                        return True
+                elif np.abs(nh-oh)<0.1:
+                        n1 = 0
+                        n2 = 30
+                else:
+                        n1 = 60
+                        n2 = 30
+                n = n1 + 2*n2
+                t = np.linspace(0,1,n2)
+                delta_t = gait_t/n
+                Qq = np.zeros([18,n])
+                Qdot = np.zeros([18,n])
+                admiss = np.ones(6, dtype=bool)
+
+                for i in np.arange(0,6):
+                        np_i = self.kine(q_des[3*i:3*i+3],i) #new foot tip position
+                        op_i = self.kine(q_cur[3*i:3*i+3],i) #old foot tip position
+                        #FIRST PHASE--> All legs go to new height with linear trajectory
+                        xi_1 = np.ones(n1)*op_i[0]
+                        yi_1 = np.ones(n1)*op_i[1]
+                        zi_1 = np.linspace(op_i[2], np_i[2], n1)
+                        #SECOND PHASE-->Tripod1 goes to new feet position with circumference arcs, Tripod2 stays
+                        if i==0 or i==2 or i==4:
+                                xi_2 = np.linspace(op_i[0], np_i[0], n2)
+                                yi_2 = np.linspace(op_i[1], np_i[1], n2)
+                                zi_2 = np_i[2] + 5*np.sin(np.pi*t)
+                        else:
+                                xi_2 = np.ones(n2)*op_i[0]
+                                yi_2 = np.ones(n2)*op_i[1]
+                                zi_2 = np.ones(n2)*np_i[2]
+                        #THIRD PHASE --> Tripod1 stays, Tripod2 goes to new feet position with circumference arcs
+                        if i==0 or i==2 or i==4:
+                                xi_3 = np.ones(n2)*np_i[0]
+                                yi_3 = np.ones(n2)*np_i[1]
+                                zi_3 = np.ones(n2)*np_i[2]
+                        else:
+                                xi_3 = np.linspace(op_i[0], np_i[0], n2)
+                                yi_3 = np.linspace(op_i[1], np_i[1], n2)
+                                zi_3 = np_i[2] + 5*np.sin(np.pi*t)
+                        # merge phases
+                        x_i = np.hstack((xi_1,xi_2,xi_3))
+                        y_i = np.hstack((yi_1,yi_2,yi_3))
+                        z_i = np.hstack((zi_1,zi_2,zi_3))
+                        T_i = np.vstack((x_i,y_i,z_i))
+                        # check admissibility and compute inverse kinematics and joint velocities
+                        admiss[i] = self.admissible(np.transpose(T_i))
+                        if admiss[i]:
+                                for j in range(0,n):
+                                        #print(i,j)
+                                        #print(T_i[:,j])
+                                        Qq[3*i:3*i+3,j] = self.leg_inv_kine(T_i[:,j], i) # leg_id=1...se metto i non funziona. C'è qualche incongruenza di segno sulle cinematiche
+                                Qdot[3*i:3*i+3,0] = Qq[3*i:3*i+3,n-1]-Qq[3*i:3*i+3,0]
+                                Qdot[3*i:3*i+3,1:n] = np.abs(np.diff(Qq[3*i:3*i+3,0:n])/delta_t)
+                        else:
+                                print('non admissible trj for leg_id: '+ str(i))
+
+                # returns Qq trajectory, Qdot derivative of trajectory, Admiss if trajectory is feasible, n number of steps
+                return Qq, Qdot, admiss, n, delta_t
+
 
         def get_leg_slice(self, data, leg_id):
                 #Data: array of size leg_joints*joint_num

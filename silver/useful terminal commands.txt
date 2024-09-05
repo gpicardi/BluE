@@ -13,7 +13,7 @@ ros2 topic pub /forward_effort_controller/commands std_msgs/msg/Float64MultiArra
 - 0
 - 2"
 
-ros2 control switch_controllers --deactivate forward_effort_controller --activate forward_position_controller 
+ros2 control switch_controllers --deactivate forward_position_controller --activate forward_velocity_controller 
 
 # DRAGON POSITION
 ros2 topic pub /forward_position_controller/commands std_msgs/msg/Float64MultiArray "data:
@@ -36,6 +36,27 @@ ros2 topic pub /forward_position_controller/commands std_msgs/msg/Float64MultiAr
 - 0.8
 - 2.3"
 
+# VELOCITY CONTROLLER 
+ros2 topic pub /forward_velocity_controller/commands std_msgs/msg/Float64MultiArray "data:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0"
+
 ros2 service call /silver_locomotion/set_gait silver_interfaces/srv/GaitSelector "{type: 'static', 
 gait_width: 40.0,
 gait_height: 30.0,
@@ -57,3 +78,6 @@ feet_policy: 'none'}"
 ros2 service call /silver_locomotion/gait_start std_srvs/srv/Empty
 
 ros2 service call /silver_locomotion/gait_stop std_srvs/srv/Empty
+
+omnidirectional_gait.py <gait_width> <gait_height> <direction> <step_length> <duty_cycle> <ground_clearance> <phase_lag> <nstep> <period> <rotation> <nleg_cycles>
+python3 omnidirectional_gait.py 40.0 30.0 0.0 20.0 0.75 10.0 "180.0, 0.0, 180.0, 0.0, 180.0, 0.0" 30 5.0 0 3

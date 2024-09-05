@@ -70,7 +70,8 @@ class LocomotionController(Node):
         self.gait_stop_proxy = self.create_service(Empty, 'silver_locomotion/gait_stop', self.gait_stop)
 
         #create publishers
-        self.forward_pos_publisher = self.create_publisher(Float64MultiArray, '/forward_position_controller/commands', 10)
+        #self.forward_pos_publisher = self.create_publisher(Float64MultiArray, '/forward_position_controller/commands', 10)
+        self.forward_pos_publisher = self.create_publisher(Float64MultiArray, '/pid_position_controller/commands', 10)
 
         # static shared variables
         self.leg_ids = np.array([1,2,3,4,5,6])

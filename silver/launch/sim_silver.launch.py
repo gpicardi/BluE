@@ -1,7 +1,7 @@
 import os, time
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, RegisterEventHandler
+from launch.actions import IncludeLaunchDescription, RegisterEventHandler, ExecuteProcess
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.event_handlers import OnProcessExit
 
@@ -18,7 +18,7 @@ def generate_launch_description():
     robot_description_raw = xacro.process_file(xacro_file).toxml()
 
     # Use config file for rviz
-    base_path = os.path.realpath(get_package_share_directory('silver')) # also tried without realpath
+    base_path = os.path.realpath(get_package_share_directory('silver'))
     rviz_path=base_path+'/config/rviz_config_file.rviz'
 
     # Configure nodes
@@ -28,15 +28,19 @@ def generate_launch_description():
                 )]), launch_arguments={'use_sim_time': 'true', 'use_ros2_control': 'true'}.items()
     )
 
+    base_path_w = os.path.realpath(get_package_share_directory('silver'))
+    custom_world=base_path_w+'/worlds/cylinder.world'
+
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
             get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
+            launch_arguments={'world': custom_world}.items(),
         )
 
     spawn_entity = Node(
         package='gazebo_ros', 
         executable='spawn_entity.py',
-        arguments=['-topic','robot_description','-entity', 'silver'],
+        arguments=['-topic','robot_description','-entity', 'silver', '-z', '0.7'],
         output='screen')
     
     joint_state_broadcaster_spawner = Node(
@@ -69,6 +73,17 @@ def generate_launch_description():
         arguments=["joint_trajectory_position_controller", "--controller-manager", "/controller_manager", "--inactive"],
     )
 
+    pid_position_controller_spawner = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'pid_position_controller'],
+        output='screen'
+    )
+
+    """pid_position_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["pid_position_controller", "--controller-manager", "/controller_manager", "active"],
+    )"""
+
     locomotion_spawner = Node(
         package="silver",
         executable="locomotion.py",
@@ -97,18 +112,26 @@ def generate_launch_description():
         )
     )
 
+    delayed_pid_position_controller_spawner = RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=joint_state_broadcaster_spawner,
+                on_exit=[pid_position_controller_spawner],
+            )
+        )
+
     # Run the node
     return LaunchDescription([
         gazebo,
         rsp,
         spawn_entity,
         joint_state_broadcaster_spawner,
-        forward_position_controller_spawner,
+        delayed_pid_position_controller_spawner,
+        #forward_position_controller_spawner,
         #forward_velocity_controller_spawner,
         #forward_effort_controller_spawner,
         #joint_trajectory_position_controller_spawner,
         delayed_rviz_node,
-        delayed_locomotion_spawner
+        #delayed_locomotion_spawner
     ])
 
 

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
-    <!-- Constant parameters -->
+    <!-- Constant parameters for new leg (all motors in one canister)-->
     <xacro:property name="body_link_mass" value="2.0" /> <!-- Kg -->
     <xacro:property name="body_link_height" value="1.0" /> <!-- m -->
     <xacro:property name="body_link_x_dim" value="0.8" /> <!-- m -->

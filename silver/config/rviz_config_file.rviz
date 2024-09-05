@@ -113,7 +113,7 @@ Visualization Manager:
           Value: true
         tibia_link:
           Value: true
-        world:
+        base_link:
           Value: false
       Marker Scale: 1
       Name: TF
@@ -121,7 +121,7 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        world:
+        base_link:
           body_link:
             coxa_link:
               femur_link:
@@ -132,7 +132,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: world
+    Fixed Frame: body_link
     Frame Rate: 30
   Name: root
   Tools:

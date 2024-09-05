@@ -9,9 +9,9 @@
                 <origin xyz="${Ox} ${Oy} ${Oz}" rpy="0.0 0.0 0.0"/>
                 <parent link="body_link"/>
                 <child link="coxa_link_${suffix}"/>
-                <limit effort="100" velocity="100.0" lower="-3.14" upper="3.14" />
+                <limit effort="3" velocity="100.0" lower="-3.14" upper="3.14" />
                 <axis xyz="0 0 1"/>
-                <dynamics damping="0.7"/>
+                <!--dynamics damping="0.7"/-->
         </joint>
 
         <link name="coxa_link_${suffix}">
@@ -39,9 +39,9 @@
             <origin xyz="${femur_joint_Ox} ${reflect*femur_joint_Oy} ${femur_joint_Oz}" rpy="0.0 ${femur_joint_Ry} 0.0"/>
             <parent link="coxa_link_${suffix}"/>
             <child link="femur_link_${suffix}"/>
-            <limit effort="100" velocity="100.0" lower="-3.14" upper="3.14" />
+            <limit effort="3" velocity="100.0" lower="-3.14" upper="3.14" />
             <axis xyz="0 0 ${reflect}"/>
-            <dynamics damping="0.7"/>
+            <!--dynamics damping="0.7"/-->
         </joint>
 
         <link name="femur_link_${suffix}">
@@ -68,9 +68,9 @@
             <origin xyz="${tibia_joint_Ox} ${tibia_joint_Oy} ${tibia_joint_Oz}" rpy="0.0 0.0 0.0"/>
             <parent link="femur_link_${suffix}"/>
             <child link="tibia_link_${suffix}"/>
-            <limit effort="100" velocity="100.0" lower="-3.14" upper="3.14" />
+            <limit effort="3" velocity="100.0" lower="-3.14" upper="3.14" />
             <axis xyz="0 0 ${reflect}"/>
-            <dynamics damping="0.7"/>
+            <!--dynamics damping="0.7"/-->
         </joint>
 
         <link name="tibia_link_${suffix}">

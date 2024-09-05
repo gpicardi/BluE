@@ -14,9 +14,9 @@
             </xacro:unless>
             <parent link="body_link"/>
             <child link="coxa_link_${suffix}"/>
-            <limit effort="100" velocity="100.0" lower="-3.14" upper="3.14" />
+            <limit effort="250.0" velocity="10.0" lower="-3.14" upper="3.14" />
             <axis xyz="0 0 1"/>
-            <dynamics damping="0.7"/>
+            <!--dynamics damping="10.0" friction="10.0"/-->
         </joint>
 
         <link name="coxa_link_${suffix}">
@@ -38,15 +38,23 @@
             </xacro:inertial_cylinder>
         </link>
 
+        <gazebo reference="coxa_link_${suffix}">
+            <!--mu1>50.0</mu1>
+            <mu2>50.0</mu2>
+            <kp>1e13</kp>
+            <kd>1e15</kd-->
+            <material>Gazebo/Blue</material>
+        </gazebo>
+
         <!-- FEMUR JOINT AND LINK-->
 
         <joint name="femur_joint_${suffix}" type="revolute">
             <origin xyz="${reflect*femur_joint_Ox} ${femur_joint_Oy} ${femur_joint_Oz}" rpy="0.0 ${femur_joint_Ry} 0.0"/>
             <parent link="coxa_link_${suffix}"/>
             <child link="femur_link_${suffix}"/>
-            <limit effort="100" velocity="100.0" lower="-3.14" upper="3.14" />
+            <limit effort="250.0" velocity="10.0" lower="-3.14" upper="3.14" />
             <axis xyz="0 0 1"/>
-            <dynamics damping="0.7"/>
+            <!--dynamics damping="10.0" friction="10.0"/-->
         </joint>
 
         <link name="femur_link_${suffix}">
@@ -68,14 +76,22 @@
             </xacro:inertial_box>
         </link>
 
+        <gazebo reference="femur_link_${suffix}">
+            <!--mu1>50.0</mu1>
+            <mu2>50.0</mu2>
+            <kp>1e13</kp>
+            <kd>1e15</kd-->
+            <material>Gazebo/Orange</material>
+        </gazebo>
+
         <!-- TIBIA JOINT AND LINK -->
         <joint name="tibia_joint_${suffix}" type="revolute">
             <origin xyz="${tibia_joint_Ox} ${tibia_joint_Oy} ${reflect*tibia_joint_Oz}" rpy="0.0 ${tibia_link_Ry} 0.0"/>
             <parent link="femur_link_${suffix}"/>
             <child link="tibia_link_${suffix}"/>
-            <limit effort="100" velocity="100.0" lower="-3.14" upper="3.14" />
+            <limit effort="250.0" velocity="10.0" lower="-3.14" upper="3.14" />
             <axis xyz="0 0 1"/>
-            <dynamics damping="0.7"/>
+            <!--dynamics damping="10.0" friction="10.0"/-->
         </joint>
 
         <link name="tibia_link_${suffix}">
@@ -97,5 +113,51 @@
             </xacro:inertial_box>
         </link>
 
+        <gazebo reference="tibia_link_${suffix}">
+            <!--mu1>2000.0</mu1>
+            <mu2>2000.0</mu2>
+            <kp>0.1</kp>
+            <kd>0.1</kd-->
+            <material>Gazebo/Black</material>
+        </gazebo>
+
+        <!-- FOOT JOINT AND LINK -->
+        <joint name="foot_joint_${suffix}" type="fixed">
+            <origin xyz="${foot_joint_Ox} ${foot_joint_Oy} ${foot_joint_Oz}" rpy="0.0 0.0 0.0"/>
+            <parent link="tibia_link_${suffix}"/>
+            <child link="foot_link_${suffix}"/>
+        </joint>
+
+        <link name="foot_link_${suffix}">
+            <visual>
+                <origin xyz="${foot_link_Ox} ${foot_link_Oy} ${foot_link_Oz}" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <sphere radius="${foot_radius}"/>
+                    <!--box size="0.1 0.05 0.05"/-->
+                </geometry>
+                <material name="white"/>
+            </visual>
+            <collision>
+                <origin xyz="${foot_link_Ox} ${foot_link_Oy} ${foot_link_Oz}" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <sphere radius="${foot_radius}"/>
+                    <!--box size="0.1 0.05 0.05"/-->
+                </geometry>
+            </collision>
+            <xacro:inertial_sphere mass="${foot_mass}" radius="${foot_radius}">
+                <origin xyz="${foot_link_Ox} ${foot_link_Oy} ${foot_link_Oz}" rpy="0.0 0.0 0.0"/>
+            </xacro:inertial_sphere>
+            <!--xacro:inertial_box mass="${foot_mass}" x="0.1" y="0.05" z="0.05">
+                <origin xyz="${foot_link_Ox} ${foot_link_Oy} ${foot_link_Oz}" rpy="0.0 0.0 0.0"/>
+            </xacro:inertial_box-->
+        </link>
+
+        <gazebo reference="foot_link_${suffix}">
+            <!--mu1>2000.0</mu1>
+            <mu2>2000.0</mu2>
+            <kp>1e3</kp>
+            <kd>1e5</kd-->
+            <material>Gazebo/White</material>
+        </gazebo>
     </xacro:macro>
 </robot>
