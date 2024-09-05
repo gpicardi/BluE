@@ -19,11 +19,13 @@ ROS2 package for the control of the Underwater Legged Robot SILVER2. The code is
 
 * Publisher --> ros2 run silver forward_position_publisher.py
 
-**To control the hexapod, the locomotion_node exposes three services**
+**To control the hexapod, the ominidirectional gait model allows to set locomotion parameters and walk for a given number of leg cycles**
 
-* /locomotion/set_gait (type GaitSelector) allows to set the parameters for different gaits (only static ominidirectional gait is implemented now)
-* /locomotion/gait_start (type Empty) starts the gaits
-* /locomotion/gait_stop (type Empty) stops the gaits
+omnidirectional_gait.py <gait_width> <gait_height> <direction> <step_length> <duty_cycle> <ground_clearance> <phase_lag> <nstep> <period> <rotation> <nleg_cycles>
+* python3 omnidirectional_gait.py 40.0 30.0 0.0 20.0 0.75 10.0 "180.0, 0.0, 180.0, 0.0, 180.0, 0.0" 30 5.0 0 3
+* ros2 run silver omnidirectional_gait.py 40.0 30.0 0.0 20.0 0.75 10.0 "180.0, 0.0, 180.0, 0.0, 180.0, 0.0" 30 5.0 0 3
+
+The controller used for the simulator of the complete exapod robot is pid_position_controller: type: position_controllers/JointGroupPositionController. The command interface used by ros2_gazebo is position_pid
 
 ## **dht11:**
 
