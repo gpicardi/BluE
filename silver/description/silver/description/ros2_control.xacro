@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <ros2_control name="SilverSystem" type="system">
+        <xacro:if value="$(arg sim_mode)">
+            <hardware>
+                <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+            </hardware>
+        </xacro:if>
+        <xacro:unless value="$(arg sim_mode)">
+            <hardware>
+                <plugin>dynamixel_hardware/DynamixelHardware</plugin>
+                <!--plugin>silver_dynamixel_hardware/SilverDynamixelHardware</plugin-->
+                <param name="usb_port">/dev/ttyUSB0</param>
+                <param name="baud_rate">57600</param>
+            </hardware>
+        </xacro:unless>
+        
+        <joint name="coxa_joint">
+        <param name="id">0</param>
+            <command_interface name="position">
+                <param name="min">-3.14</param>
+                <param name="max">3.14</param>
+            </command_interface>
+            <command_interface name="velocity"/>
+            <xacro:if value="$(arg sim_mode)">
+                <command_interface name="effort"/>
+            </xacro:if>    
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+
+        <joint name="femur_joint">
+        <param name="id">1</param>
+            <command_interface name="position">
+                <param name="min">-3.14</param>
+                <param name="max">3.14</param>
+            </command_interface>
+            <command_interface name="velocity"/>
+            <xacro:if value="$(arg sim_mode)">
+                <command_interface name="effort"/>
+            </xacro:if>  
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+
+        <joint name="tibia_joint">
+        <param name="id">2</param>
+            <command_interface name="position">
+                <param name="min">-3.14</param>
+                <param name="max">3.14</param>
+            </command_interface>
+            <command_interface name="velocity"/>
+            <xacro:if value="$(arg sim_mode)">
+                <command_interface name="effort"/>
+            </xacro:if>  
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+
+        <!---transmission name="coxa_transmission">
+            <plugin>transmission_interface/SimpleTransmission</plugin>
+            <actuator name="coxa_motor" role="coxa_motor"/>
+            <joint name="coxa_joint" role="coxa_joint">
+                <mechanical_reduction>1.0</mechanical_reduction>
+                <offset>0.0</offset>
+            </joint>
+        </transmission>
+
+        <transmission name="femur_transmission">
+            <plugin>transmission_interface/SimpleTransmission</plugin>
+            <actuator name="femur_motor" role="femur_motor"/>
+            <joint name="femur_joint" role="femur_joint">
+                <mechanical_reduction>1.0</mechanical_reduction>
+                <offset>0.0</offset>
+            </joint>
+        </transmission>
+
+        <transmission name="tibia_transmssion">
+            <plugin>transmission_interface/SimpleTransmission</plugin>
+            <actuator name="tibia_motor" role="tibia_motor"/>
+            <joint name="tibia_joint" role="tibia_joint">
+                <mechanical_reduction>4.0</mechanical_reduction>
+                <offset>0.0</offset>
+            </joint>
+        </transmission-->
+
+    </ros2_control>
+    
+</robot>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- ros_control plugin -->
+    <gazebo>
+      <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+        <parameters>$(find silver)/config/silver_controllers.yaml</parameters>
+        <parameters>$(find silver)/config/gaz_ros2_control_use_sim.yaml</parameters>
+      </plugin>
+    </gazebo>
+
+</robot>
