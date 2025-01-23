@@ -51,4 +51,8 @@ ROS2 package to read data from the LTC2945 power monitor. The calibration of the
 
 ROS2 package to read data from the BNO055 IMU. I use the code from https://github.com/flynneva/bno055
 
+## **Battery and Main boards:**
+
+The two folders contain electric scheme, Bills of Materials, 3D and gerber files (needed for proper visualization and for manufacturing). The electronic hardware was co-designed with Dr. Carandell (UPC) -https://github.com/matiascarandell
+
 
